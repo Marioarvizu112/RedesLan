@@ -6,148 +6,128 @@
 <title>Proyecto Redes LAN Profesional</title>
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 <style>
-body{font-family:Arial;margin:0;background:#0f172a;color:white;scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;margin:0;background:#0f172a;color:white;scroll-behavior:smooth}
 header{background:#020617;padding:20px;text-align:center;position:sticky;top:0;z-index:10}
 #adminBtn{position:absolute;top:20px;right:20px;background:#22c55e;border:none;padding:10px;cursor:pointer}
-section{padding:50px}
-.card{background:#1e293b;margin:20px auto;padding:25px;border-radius:14px;max-width:1100px;box-shadow:0 10px 30px rgba(0,0,0,.3);transition:.3s}
-.card:hover{transform:scale(1.02)}
+section{padding:60px}
+.card{background:#1e293b;margin:20px auto;padding:30px;border-radius:16px;max-width:1100px;box-shadow:0 20px 40px rgba(0,0,0,.4);transition:.4s}
+.card:hover{transform:translateY(-5px) scale(1.01)}
 h2{color:#38bdf8}
-img{width:100%;border-radius:10px;margin-top:10px}
+img{width:100%;border-radius:12px;margin-top:10px}
 iframe{width:100%;height:420px;border-radius:12px;margin-top:10px}
 .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
 .gallery img{height:120px;object-fit:cover}
 .hidden{display:none}
 button{padding:10px;margin:5px;cursor:pointer}
 
+/* APPLE STYLE ANIMATIONS */
+.fade-in{opacity:0;transform:translateY(40px);transition:all 1s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
 /* DASHBOARD */
-#sidebar{width:250px;background:#020617;height:100vh;padding:20px;position:fixed;left:-260px;transition:.3s}
+#sidebar{width:250px;background:#020617;height:100vh;padding:20px;position:fixed;left:-260px;transition:.4s}
 #sidebar.active{left:0}
 #sidebar button{display:block;width:100%;margin:10px 0;padding:10px;background:#1e293b;color:white;border:none}
-#main{margin-left:0;transition:.3s}
+#main{margin-left:0;transition:.4s}
 #main.active{margin-left:250px}
-
-/* LOGIN */
-#loginModal{position:fixed;top:0;left:0;width:100%;height:100%;background:black;display:flex;justify-content:center;align-items:center}
-#loginBox{background:#1e293b;padding:30px;border-radius:10px;text-align:center}
-input{margin:10px;padding:10px;width:200px}
 </style>
 </head>
 <body>
 
 <header>
-<img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Conalep_logo.svg" style="width:120px">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Conalep_logo.svg/512px-Conalep_logo.svg.png" style="width:120px" alt="Logo CONALEP">
 <h1>Proyecto Redes LAN Profesional</h1>
-<button id="adminBtn" onclick="abrirLogin()">Admin</button>
+<button id="adminBtn" onclick="activarAdmin()">Admin</button>
 </header>
 
-<!-- CONTENIDO -->
 <div id="main">
 
-<section data-aos="fade-up">
+<section class="fade-in">
 <div class="card">
 <h2>Uso de Redes LAN</h2>
-<p>Las redes LAN permiten compartir recursos como archivos, impresoras e internet. Son esenciales para la productividad en empresas y escuelas.</p>
+<p>Las redes LAN permiten compartir recursos como archivos, impresoras e internet. Son esenciales para la productividad.</p>
 <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31">
 </div>
 </section>
 
-<section data-aos="fade-right">
+<section class="fade-in">
 <div class="card">
 <h2>Cableado Estructurado</h2>
-<p>Organiza cables para transmisión eficiente. Usa estándares como Cat6 y fibra óptica.</p>
+<p>Organiza cables para transmisión eficiente usando estándares modernos.</p>
 <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc">
 </div>
 </section>
 
-<section data-aos="zoom-in">
+<section class="fade-in">
 <div class="card">
 <h2>Equipos de Red</h2>
-<ul>
-<li>Switch</li>
-<li>Router</li>
-<li>Servidor</li>
-<li>Firewall</li>
-</ul>
+<p>Switch, Router, Servidor y Firewall permiten el funcionamiento seguro de la red.</p>
 <img src="https://images.unsplash.com/photo-1603791440384-56cd371ee9a7">
 </div>
 </section>
 
-<section data-aos="fade-up">
-<div class="card">
-<h2>Aspecto Legal</h2>
-<p>Incluye delitos informáticos, uso de software legal y derechos de autor.</p>
-</div>
-</section>
-
-<section data-aos="fade-up">
+<section class="fade-in">
 <div class="card">
 <h2>Video Profesional</h2>
 <iframe src="https://www.youtube.com/embed/8ZtInClXe1Q" allowfullscreen></iframe>
 </div>
 </section>
 
-<section>
-<div class="card">
-<h2>Galería</h2>
-<div class="gallery" id="galeria"></div>
-</div>
-</section>
-
 </div>
 
-<!-- SIDEBAR -->
 <div id="sidebar">
-<h2>Admin</h2>
+<h2>Modo Admin</h2>
 <button onclick="activarEdicion()">Editar Página</button>
 <button onclick="guardar()">Guardar</button>
 <input type="file" multiple onchange="subirGaleria(event)">
-<button onclick="cerrarPanel()">Cerrar</button>
+<button onclick="cerrarAdmin()">Cerrar</button>
 </div>
 
-<!-- LOGIN -->
-<div id="loginModal" class="hidden">
-<div id="loginBox">
-<h2>Login</h2>
-<input id="user" placeholder="Usuario">
-<input id="pass" type="password" placeholder="Contraseña">
-<button onclick="login()">Entrar</button>
-</div>
-</div>
-
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-AOS.init({duration:1200});
 
-const admins=[
-{usuario:"Mario",password:"1234"},
-{usuario:"Lesly",password:"1234"},
-{usuario:"Genesis",password:"1234"}
-];
 
-function abrirLogin(){loginModal.classList.remove("hidden")}
+function activarAdmin(){
+ document.getElementById('sidebar').classList.add('active');
+ document.getElementById('main').classList.add('active');
+}
 
-function login(){
-let u=user.value;
-let p=pass.value;
-let v=admins.find(a=>a.usuario===u&&a.password===p);
-if(v){loginModal.classList.add("hidden");sidebar.classList.add("active");main.classList.add("active")}else alert("Error");}
-
-function cerrarPanel(){sidebar.classList.remove("active");main.classList.remove("active")}
+function cerrarAdmin(){
+ document.getElementById('sidebar').classList.remove('active');
+ document.getElementById('main').classList.remove('active');
+}
 
 function activarEdicion(){document.body.contentEditable=true}
 
 function guardar(){localStorage.setItem("proFinal",document.body.innerHTML);alert("Guardado")}
 
-function subirGaleria(e){let g=document.getElementById("galeria");for(let f of e.target.files){let r=new FileReader();r.onload=x=>{let img=document.createElement("img");img.src=x.target.result;g.appendChild(img)};r.readAsDataURL(f)}}
+function subirGaleria(e){
+ let g=document.getElementById("galeria");
+ for(let f of e.target.files){
+  let r=new FileReader();
+  r.onload=x=>{
+   let img=document.createElement("img");
+   img.src=x.target.result;
+   g.appendChild(img);
+  };
+  r.readAsDataURL(f);
+ }
+}
+
+// ANIMACIONES TIPO APPLE
+const elements=document.querySelectorAll('.fade-in');
+const observer=new IntersectionObserver(entries=>{
+ entries.forEach(entry=>{
+  if(entry.isIntersecting){
+   entry.target.classList.add('visible');
+  }
+ });
+});
+elements.forEach(el=>observer.observe(el));
 
 window.onload=()=>{
-// entrar directo sin login
-sidebar.classList.add("active");
-main.classList.add("active");
-if(localStorage.getItem("proFinal")){
- document.body.innerHTML=localStorage.getItem("proFinal")
-}
+ if(localStorage.getItem("proFinal")){
+  document.body.innerHTML=localStorage.getItem("proFinal");
+ }
 }
 </script>
 
