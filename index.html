@@ -46,7 +46,7 @@ button{
   border-radius:10px;
 }
 
-/* PANEL ADMIN */
+/* PANEL */
 #dashboard{
   position:fixed;
   top:20px;
@@ -72,15 +72,8 @@ button{
   align-items:center;
   background:#38bdf8;
   font-weight:bold;
-  transition:0.3s;
 }
 
-#dashboard button:hover{
-  background:#0ea5e9;
-  transform:translateX(5px);
-}
-
-/* CONTENIDO */
 #main{
   padding:25px;
 }
@@ -95,7 +88,7 @@ button{
 }
 
 @keyframes fade{
-  from{opacity:0; transform:translateY(15px);}
+  from{opacity:0; transform:translateY(10px);}
   to{opacity:1; transform:translateY(0);}
 }
 
@@ -115,7 +108,6 @@ button{
   padding:10px;
   border-radius:12px;
   display:none;
-  box-shadow:0 0 15px #38bdf8;
 }
 
 #aiChat{
@@ -153,6 +145,7 @@ button{
 <input type="file" id="fileInput" hidden>
 
 <button onclick="save()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+<button onclick="resetContent()"><i class="fa-solid fa-rotate"></i> Reset</button>
 <button onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
 <button onclick="toggleAI()"><i class="fa-solid fa-robot"></i> IA</button>
 
@@ -166,12 +159,12 @@ button{
 <button onclick="askAI()" style="width:100%">Enviar</button>
 </div>
 
-<!-- CONTENIDO EXTENSO -->
+<!-- CONTENIDO COMPLETO -->
 <div id="main">
 
 <div class="card">
 <h2>Uso de redes LAN en una organización</h2>
-<p>Permiten compartir internet, archivos, impresoras y servidores dentro de una empresa o escuela.</p>
+<p>Permiten compartir internet, archivos, impresoras y servidores dentro de empresas o escuelas.</p>
 <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31">
 </div>
 
@@ -183,7 +176,7 @@ button{
 
 <div class="card">
 <h2>Legislación de software</h2>
-<p>Regula licencias, uso legal y distribución de programas informáticos.</p>
+<p>Regula licencias, uso legal y distribución de programas.</p>
 <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa">
 </div>
 
@@ -201,13 +194,13 @@ button{
 
 <div class="card">
 <h2>Definición de LAN</h2>
-<p>Red local que conecta dispositivos en un área limitada.</p>
+<p>Red local que conecta dispositivos en un área pequeña.</p>
 <img src="https://images.unsplash.com/photo-1518770660439-4636190af475">
 </div>
 
 <div class="card">
 <h2>Cableado estructurado</h2>
-<p>Organización de cables para datos y voz en una red.</p>
+<p>Organización de cables para datos y voz.</p>
 <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc">
 </div>
 
@@ -228,39 +221,64 @@ button{
 <img src="https://images.unsplash.com/photo-1600267165683-9e4a6d0cfc2b">
 </div>
 
+<!-- VIDEO EN ESPAÑOL -->
 <div class="card">
-<h2>Video educativo</h2>
+<h2>Video explicativo en español</h2>
+
 <iframe width="100%" height="350"
-src="https://www.youtube.com/embed/qiQR5rTSshw"
-frameborder="0" allowfullscreen></iframe>
+src="https://www.youtube.com/embed/3QhU9jd03a0"
+frameborder="0"
+allowfullscreen></iframe>
+
 </div>
 
 </div>
 
 <script>
 
+/* LOGIN */
 let logged=false;
 
-/* LOGIN */
-function openLogin(){ loginBox.style.display="flex"; }
+function openLogin(){
+ document.getElementById("loginBox").style.display="flex";
+}
 
 function login(){
- if(user.value==="admin" && pass.value==="1234"){
+ const u=document.getElementById("user").value;
+ const p=document.getElementById("pass").value;
+
+ if(u==="admin" && p==="1234"){
   logged=true;
-  loginBox.style.display="none";
-  dashboard.classList.add("active");
+  document.getElementById("loginBox").style.display="none";
+  document.getElementById("dashboard").classList.add("active");
  }
 }
 
-/* EDIT */
+/* CARGAR GUARDADO */
+window.addEventListener("load",()=>{
+ const saved=localStorage.getItem("lanProject");
+ if(saved){
+  document.getElementById("main").innerHTML=saved;
+ }
+});
+
+/* EDITAR */
 function enableEdit(){
  if(!logged) return alert("No admin");
- main.contentEditable=true;
+ document.getElementById("main").contentEditable=true;
 }
 
-/* SAVE */
+/* GUARDAR */
 function save(){
- localStorage.setItem("lanProject",main.innerHTML);
+ const content=document.getElementById("main").innerHTML;
+ localStorage.setItem("lanProject",content);
+ alert("Guardado correctamente");
+}
+
+/* RESET */
+function resetContent(){
+ localStorage.removeItem("lanProject");
+ location.reload();
 }
 
 /* LOGOUT */
@@ -269,41 +287,50 @@ function logout(){
  location.reload();
 }
 
-/* IMAGE */
-fileInput.addEventListener("change",e=>{
- let file=e.target.files[0];
- let reader=new FileReader();
+/* IMÁGENES */
+document.getElementById("fileInput").addEventListener("change",e=>{
+ const file=e.target.files[0];
+ const reader=new FileReader();
+
  reader.onload=ev=>{
-  let img=document.createElement("img");
+  const img=document.createElement("img");
   img.src=ev.target.result;
-  main.appendChild(img);
+  img.style.width="100%";
+  document.getElementById("main").appendChild(img);
  };
+
  reader.readAsDataURL(file);
 });
 
-function uploadImage(){ fileInput.click(); }
+function uploadImage(){
+ if(!logged) return alert("Solo admin");
+ document.getElementById("fileInput").click();
+}
 
 /* IA */
 function toggleAI(){
- aiBox.style.display = aiBox.style.display==="block"?"none":"block";
+ const box=document.getElementById("aiBox");
+ box.style.display=box.style.display==="block"?"none":"block";
 }
 
 async function askAI(){
- let text=aiInput.value;
+ const text=document.getElementById("aiInput").value;
  if(!text) return;
 
- aiChat.innerHTML += `<p><b>Tú:</b> ${text}</p>`;
+ const chat=document.getElementById("aiChat");
 
- const res = await fetch("http://localhost:3000/ia",{
+ chat.innerHTML+=`<p><b>Tú:</b> ${text}</p>`;
+
+ const res=await fetch("http://localhost:3000/ia",{
   method:"POST",
-  headers:{ "Content-Type":"application/json" },
+  headers:{"Content-Type":"application/json"},
   body:JSON.stringify({message:text})
  });
 
- const data = await res.json();
+ const data=await res.json();
 
- aiChat.innerHTML += `<p><b>IA:</b> ${data.reply}</p>`;
- aiInput.value="";
+ chat.innerHTML+=`<p><b>IA:</b> ${data.reply}</p>`;
+ document.getElementById("aiInput").value="";
 }
 
 </script>
